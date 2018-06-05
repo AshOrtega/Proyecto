@@ -1,18 +1,22 @@
-package modelo;
+package main;
 
 import java.util.ArrayList;
+
+import modelo.ConexionSQL;
+import modelo.PersonaDAOImp;
+import modelo.PersonaDTO;
 
 public class TestPersonas {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.printf("Mostrando personas %n%n");
-		String fichero = "db/personas.xml";
-		PersonaDAOImp personaDAO = new PersonaDAOImp(fichero);
+		String fichero = "db/personas.bd";
+		//PersonaDAOImp personaDAO = new PersonaDAOImp();
 		
 		//personaDAO.cargarContenido(fichero);
 		
-		ArrayList<PersonaDTO> listaPersonas = personaDAO.listarTodasPersonas(fichero);
+		//ArrayList<PersonaDTO> listaPersonas = personaDAO.listarTodasPersonas(fichero);
 		/*
 		for (int i = 0; i < listaPersonas.size(); i++) {
 			System.out.println("Código " + listaPersonas.get(i).getCodigo());
@@ -34,7 +38,7 @@ public class TestPersonas {
 		
 		//System.out.println("¿Persona borrada? " + personaDAO.borrarPersona("Eustaquia", "Eustaquiez"));
 		//System.out.println("¿Edad actualizado? " + personaDAO.actualizarEdadPersona(21, 30));
-		personaDAO.obtenerCabeceraBaseDatos(fichero);
+		//personaDAO.obtenerCabeceraBaseDatos(fichero);
 
 		
 		

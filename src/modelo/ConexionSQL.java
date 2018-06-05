@@ -1,6 +1,7 @@
 package modelo;
 
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,9 +15,12 @@ private static Connection conexion;
 
 		try {
 			String DRIVER = "org.sqlite.JDBC";
-			String DB_URL = "jdbc:sqlite:db/personas.db";
+			String DB_URL = "jdbc:sqlite:";
+			String DB = "db/personas.db";
+			
 			Class.forName(DRIVER);
-			conexion = DriverManager.getConnection(DB_URL);
+			conexion = DriverManager.getConnection(DB_URL + DB);
+			
 			
 		} catch ( ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -47,4 +51,6 @@ private static Connection conexion;
 				}
 		}
 	}
+	
+
 }

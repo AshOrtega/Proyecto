@@ -1,4 +1,4 @@
-package modelo;
+package main;
 
 import java.awt.EventQueue;
 import vista.Vista;

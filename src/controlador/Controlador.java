@@ -5,6 +5,8 @@ import modelo.PersonaDTO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +27,16 @@ public class Controlador implements ActionListener, TableModelListener{
 	private PersonaDAOImp personaDAO;
 	private int contador = 0;
 	private String fichero;
+	private String DB = "db/personas.db";
 	private String textoNombre;
 	private String textoApellido;
 	private int textoEdad;
 	private int textoCodigo;
-	
+
 	public Controlador(Vista vista) {
 		this.vista = vista;
-
+		
+		existeFichero(DB);
 		registrarComponentes();
 	}
 	
@@ -131,30 +135,34 @@ public class Controlador implements ActionListener, TableModelListener{
 		int resultado = jFileChooser.showOpenDialog(vista.getFrame());
 		if (resultado == jFileChooser.APPROVE_OPTION) {
 			fichero = jFileChooser.getSelectedFile().getPath();
-			personaDAO = new PersonaDAOImp(fichero);
-			listaPersona = personaDAO.listarTodasPersonas(fichero);
+			personaDAO = new PersonaDAOImp();
+			personaDAO.cargarContenido(fichero);
+			mostrarBaseDatos(fichero, personaDAO);
 			
-			for (int i = 0; i < 100; i++) {
-				vista.getComboBox().addItem(i);
-			}
-			
-			mostrarFormulario(contador, listaPersona);
-			vista.getBotonAdelante().setEnabled(true);
-			vista.getBotonAtras().setEnabled(true);
-			vista.getMntmCargarDatos().setEnabled(false);
-			vista.getComboBox().setEnabled(true);
-			vista.getBtnInsertar().setEnabled(true);
-			vista.getBtnBorrar().setEnabled(true);
-			vista.getBtnActualizar().setEnabled(true);
-			
-			modeloTabla modeloTabla = new modeloTabla(personaDAO);
-			JTable jTable = new JTable(modeloTabla);
-			jTable.getModel().addTableModelListener(this);
-			vista.getScrollPane().setViewportView(jTable);
 			
 		}
-
-
+	}
+	
+	private void mostrarBaseDatos(String fichero, PersonaDAOImp personaDAO)  {
+		listaPersona = personaDAO.listarTodasPersonas(fichero);
+		
+		for (int i = 0; i < 100; i++) {
+			vista.getComboBox().addItem(i);
+		}
+		
+		mostrarFormulario(contador, listaPersona);
+		vista.getBotonAdelante().setEnabled(true);
+		vista.getBotonAtras().setEnabled(true);
+		vista.getMntmCargarDatos().setEnabled(false);
+		vista.getComboBox().setEnabled(true);
+		vista.getBtnInsertar().setEnabled(true);
+		vista.getBtnBorrar().setEnabled(true);
+		vista.getBtnActualizar().setEnabled(true);
+		
+		modeloTabla modeloTabla = new modeloTabla(personaDAO);
+		JTable jTable = new JTable(modeloTabla);
+		jTable.getModel().addTableModelListener(this);
+		vista.getScrollPane().setViewportView(jTable);
 	}
 	
 	private void mostrarFormulario(int i, List<PersonaDTO> listaPersona) {
@@ -182,6 +190,24 @@ public class Controlador implements ActionListener, TableModelListener{
 
 	private void salirDeAplicacion() {
 		System.exit(0);
+	}
+	
+	public void existeFichero(String DB) {
+		File fichero = new File(DB);
+		String file = "db/personas.xml";
+		personaDAO = new PersonaDAOImp();
+			if (fichero.exists()) {
+			 if (fichero.length() > 16) {
+				mostrarBaseDatos(file, personaDAO); 
+			 }
+			} else {
+				try {
+					fichero.createNewFile();
+					System.out.println("Fichero creado correctamente");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 	}
 
 	@Override

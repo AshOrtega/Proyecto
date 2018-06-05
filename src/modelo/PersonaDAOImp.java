@@ -21,11 +21,7 @@ public class PersonaDAOImp implements PersonaDAO{
 	private static Connection conexion = ConexionSQL.getConexion();
 
 	private String[] nombreColumnas;
-	private Object[][] datos;	
-	
-	public PersonaDAOImp (String fichero) {
-		//listarTodasPersonas(fichero);
-	}
+	private Object[][] datos;
 	
 	public String[] getColumnas() {
 		return nombreColumnas;

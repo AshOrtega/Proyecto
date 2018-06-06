@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 
 import modelo.ConexionSQL;
+import modelo.Log;
 import modelo.PersonaDAOImp;
 import modelo.PersonaDTO;
 
@@ -12,6 +13,7 @@ public class TestPersonas {
 		// TODO Auto-generated method stub
 		System.out.printf("Mostrando personas %n%n");
 		String fichero = "db/personas.bd";
+		Log log = new Log();
 		//PersonaDAOImp personaDAO = new PersonaDAOImp();
 		
 		//personaDAO.cargarContenido(fichero);
@@ -39,7 +41,7 @@ public class TestPersonas {
 		//System.out.println("¿Persona borrada? " + personaDAO.borrarPersona("Eustaquia", "Eustaquiez"));
 		//System.out.println("¿Edad actualizado? " + personaDAO.actualizarEdadPersona(21, 30));
 		//personaDAO.obtenerCabeceraBaseDatos(fichero);
-
+		log.escribirPersonaInsertada("Pepa", "Pepez");
 		
 		
 	}

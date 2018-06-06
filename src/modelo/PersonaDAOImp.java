@@ -19,9 +19,9 @@ import org.xml.sax.SAXException;
 
 public class PersonaDAOImp implements PersonaDAO{
 	private static Connection conexion = ConexionSQL.getConexion();
-
 	private String[] nombreColumnas;
 	private Object[][] datos;
+	Log log = new Log();
 	
 	public String[] getColumnas() {
 		return nombreColumnas;
@@ -99,7 +99,7 @@ public class PersonaDAOImp implements PersonaDAO{
 	public void obtenerCabeceraBaseDatos(String fichero) {
 		Document doc;
 		try {
-			doc = ConexionXML.leerFichero(fichero);
+			doc = ConexionXML.leerFichero("db/personas.xml");
 			NodeList nodoPersonas = doc.getElementsByTagName("dataset");
 			Node nodo = nodoPersonas.item(0);
 			Element elemento = (Element)nodo;
@@ -132,6 +132,8 @@ public class PersonaDAOImp implements PersonaDAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+			log.escribirPersonaInsertada(persona.getNombre(), persona.getApellido());
+
 		return insertado == 1;	
 		}
 	
@@ -147,7 +149,8 @@ public class PersonaDAOImp implements PersonaDAO{
 		} catch ( SQLException e) {
 			e.printStackTrace();
 		}
-			return borrado == 1;
+		log.escribirPersonaBorrada(nombre, apellido);
+		return borrado == 1;
 			
 				}
 
@@ -163,7 +166,9 @@ public class PersonaDAOImp implements PersonaDAO{
 		} catch ( SQLException e) {
 			e.printStackTrace();
 		}
-			return actualizado == 1;
+		log.escribirPersonaActualizada(codigo);
+
+		return actualizado == 1;
 	}
 	
 	@Override

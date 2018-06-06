@@ -19,6 +19,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import modelo.modeloTabla;
+import modelo.Log;
 import modelo.PersonaDAOImp;
 
 public class Controlador implements ActionListener, TableModelListener{
@@ -32,6 +33,7 @@ public class Controlador implements ActionListener, TableModelListener{
 	private String textoApellido;
 	private int textoEdad;
 	private int textoCodigo;
+	private Log log;
 
 	public Controlador(Vista vista) {
 		this.vista = vista;
@@ -83,7 +85,6 @@ public class Controlador implements ActionListener, TableModelListener{
 				textoNombre = vista.getTextoEditarNombre().getText();
 				textoApellido = vista.getTextoEditarApellido().getText();
 				textoEdad = (int) vista.getComboBox().getSelectedItem();
-				System.out.println(textoNombre + " " + textoApellido + " " + textoEdad);
 				PersonaDTO persona = new PersonaDTO();
 				persona.setNombre(textoNombre);
 				persona.setApellido(textoApellido);

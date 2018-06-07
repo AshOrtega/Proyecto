@@ -2,6 +2,7 @@ package modelo;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,18 +78,19 @@ public class PersonaDAOImp implements PersonaDAO{
 							resulset.getInt(4));
 					listaPersonas.add(persona);
 
-			int i = 0;
-			datos = new Object[listaPersonas.size()][4];
+					int i = 0;
+					datos = new Object[listaPersonas.size()][4];
 
-			for (PersonaDTO datosPersona : listaPersonas) {
-				datos[i][0] = (Object) datosPersona.getCodigo();
-				datos[i][1] = (Object) datosPersona.getNombre();
-				datos[i][2] = (Object) datosPersona.getApellido();
-				datos[i][3] = (Object) datosPersona.getEdad();
-				i++;
+					for (PersonaDTO datosPersona : listaPersonas) {
+					datos[i][0] = (Object) datosPersona.getCodigo();
+					datos[i][1] = (Object) datosPersona.getNombre();
+					datos[i][2] = (Object) datosPersona.getApellido();
+					datos[i][3] = (Object) datosPersona.getEdad();
+					i++;
+					}
 			}
 			obtenerCabeceraBaseDatos(fichero);
-			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -97,23 +99,26 @@ public class PersonaDAOImp implements PersonaDAO{
 	}
 	@Override
 	public void obtenerCabeceraBaseDatos(String fichero) {
-		Document doc;
+		DatabaseMetaData metaDatos;
+		int i = 0;
 		try {
-			doc = ConexionXML.leerFichero("db/personas.xml");
-			NodeList nodoPersonas = doc.getElementsByTagName("dataset");
-			Node nodo = nodoPersonas.item(0);
-			Element elemento = (Element)nodo;
-			nombreColumnas = new String[elemento.getElementsByTagName("record").item(0).getChildNodes().getLength()];
-			for (int i = 0; i < elemento.getElementsByTagName("record").item(0).getChildNodes().getLength(); i++) {
-				nombreColumnas[i] = elemento.getElementsByTagName("record").item(0).getChildNodes().item(i).getNodeName();
-				
+			metaDatos = conexion.getMetaData();
+			ResultSet resulset = metaDatos.getColumns(null, null, "Personas", null);
+			while (resulset.next()) {
+				i++;
 			}
-			
-		} catch ( IOException | ParserConfigurationException | SAXException e) {
+			nombreColumnas = new String[i];
+
+				 i = 0;
+				resulset = metaDatos.getColumns(null, null, "Personas", null);
+				while (resulset.next()) {
+					nombreColumnas[i] = resulset.getString(4);
+					i++;
+				}	
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Override
@@ -122,12 +127,12 @@ public class PersonaDAOImp implements PersonaDAO{
 		// TODO Auto-generated method stub
 		int insertado = 0;
 			String sql = "INSERT INTO Personas (codigo, nombre, apellido, edad) VALUES (?,?,?,?);";
-			try (PreparedStatement psStatement = conexion.prepareStatement(sql);){
-				psStatement.setInt(1, listaPersonas.size() + 1);
-				psStatement.setString(2, persona.getNombre());
-				psStatement.setString(3, persona.getApellido());
-				psStatement.setInt(4, persona.getEdad());
-				insertado = psStatement.executeUpdate();
+			try (PreparedStatement statement = conexion.prepareStatement(sql);){
+				statement.setInt(1, listaPersonas.size() + 1);
+				statement.setString(2, persona.getNombre());
+				statement.setString(3, persona.getApellido());
+				statement.setInt(4, persona.getEdad());
+				insertado = statement.executeUpdate();
 		
 		} catch (SQLException e) {
 			e.printStackTrace();

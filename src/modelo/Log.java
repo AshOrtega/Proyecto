@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Log {
-	private File fichero = new File("Logs/log");
+	private File fichero = new File("Logs/log.log");
 	private PrintWriter reader;
 	
 	public void existeFichero()	{

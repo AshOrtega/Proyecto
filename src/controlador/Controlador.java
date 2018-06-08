@@ -101,6 +101,7 @@ public class Controlador implements ActionListener, TableModelListener{
 				
 				personaDAO.borrarPersona(textoNombre, textoApellido);
 				listaPersona = personaDAO.listarTodasPersonas(fichero);
+				contador = 0;
 				mostrarFormulario(contador, listaPersona);
 				break;
 				

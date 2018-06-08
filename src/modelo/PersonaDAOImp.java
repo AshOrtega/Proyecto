@@ -126,9 +126,17 @@ public class PersonaDAOImp implements PersonaDAO{
 		
 		// TODO Auto-generated method stub
 		int insertado = 0;
+		int codigoNuevo = 0;
+		for (int i = 0; i < listaPersonas.size(); i++) {
+			if (listaPersonas.get(i).getCodigo() != (i+1)) {
+				codigoNuevo = i + 1;
+			} else {
+				codigoNuevo = listaPersonas.size() + 1;
+			}
+		}
 			String sql = "INSERT INTO Personas (codigo, nombre, apellido, edad) VALUES (?,?,?,?);";
 			try (PreparedStatement statement = conexion.prepareStatement(sql);){
-				statement.setInt(1, listaPersonas.size() + 1);
+				statement.setInt(1, codigoNuevo);
 				statement.setString(2, persona.getNombre());
 				statement.setString(3, persona.getApellido());
 				statement.setInt(4, persona.getEdad());

@@ -71,7 +71,6 @@ public class Controlador implements ActionListener, TableModelListener{
 		if (e.getSource().getClass() == JButton.class) {
 			JButton jButton = (JButton) e.getSource();
 			String textoBoton = jButton.getText();
-			System.out.println(textoBoton);
 			
 			switch (textoBoton) {
 			case ">":

@@ -65,7 +65,7 @@ public class PersonaDAOImp implements PersonaDAO{
 	}
 	
 	@Override
-	public ArrayList<PersonaDTO> listarTodasPersonas(String fichero) {
+	public ArrayList<PersonaDTO> listarTodasPersonas() {
 		// TODO Auto-generated method stub
 		ArrayList<PersonaDTO> listaPersonas = new ArrayList<>();
 			String sql = "SELECT * FROM Personas;";
@@ -89,7 +89,7 @@ public class PersonaDAOImp implements PersonaDAO{
 					i++;
 					}
 			}
-			obtenerCabeceraBaseDatos(fichero);
+			obtenerCabeceraBaseDatos();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -98,7 +98,7 @@ public class PersonaDAOImp implements PersonaDAO{
 		return listaPersonas;
 	}
 	@Override
-	public void obtenerCabeceraBaseDatos(String fichero) {
+	public void obtenerCabeceraBaseDatos() {
 		DatabaseMetaData metaDatos;
 		int i = 0;
 		try {
@@ -180,7 +180,6 @@ public class PersonaDAOImp implements PersonaDAO{
 			e.printStackTrace();
 		}
 		log.escribirPersonaActualizada(codigo);
-
 		return actualizado == 1;
 	}
 	
@@ -196,7 +195,7 @@ public class PersonaDAOImp implements PersonaDAO{
 		} catch ( SQLException e) {
 			e.printStackTrace();
 		}
-			return actualizado == 1;
+		return actualizado == 1;
 	}
 	
 	@Override
@@ -211,6 +210,6 @@ public class PersonaDAOImp implements PersonaDAO{
 		} catch ( SQLException e) {
 			e.printStackTrace();
 		}
-			return actualizado == 1;
+		return actualizado == 1;
 	}
 }

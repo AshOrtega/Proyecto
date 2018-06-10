@@ -1,12 +1,7 @@
 package modelo;
-
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-
 
 public class ConexionSQL {
 private static Connection conexion;
@@ -19,9 +14,7 @@ private static Connection conexion;
 			String DB = "db/personas.db";
 			
 			Class.forName(DRIVER);
-			conexion = DriverManager.getConnection(DB_URL + DB);
-			
-			
+			conexion = DriverManager.getConnection(DB_URL + DB);	
 		} catch ( ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,7 +28,6 @@ private static Connection conexion;
 			Runtime.getRuntime().addShutdownHook(new ShutdownHook());
 		}		
 		return conexion; 
-	
 	}
 	
 	static class ShutdownHook extends Thread{
@@ -51,6 +43,4 @@ private static Connection conexion;
 				}
 		}
 	}
-	
-
 }

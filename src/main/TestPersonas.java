@@ -40,7 +40,7 @@ public class TestPersonas {
 		
 		//System.out.println("¿Persona borrada? " + personaDAO.borrarPersona("Eustaquia", "Eustaquiez"));
 		//System.out.println("¿Edad actualizado? " + personaDAO.actualizarEdadPersona(21, 30));
-		personaDAO.obtenerCabeceraBaseDatos(fichero);
+		personaDAO.obtenerCabeceraBaseDatos();
 		//log.escribirPersonaInsertada("Pepa", "Pepez");
 		
 		

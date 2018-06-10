@@ -33,7 +33,6 @@ public class Controlador implements ActionListener, TableModelListener{
 	private String textoApellido;
 	private int textoEdad;
 	private int textoCodigo;
-	private Log log;
 
 	public Controlador(Vista vista) {
 		this.vista = vista;
@@ -52,8 +51,6 @@ public class Controlador implements ActionListener, TableModelListener{
 		vista.getBtnInsertar().addActionListener(this);
 		vista.getBtnBorrar().addActionListener(this);
 		vista.getBtnActualizar().addActionListener(this);
-
-
 	}
 	
 	@Override
@@ -70,10 +67,12 @@ public class Controlador implements ActionListener, TableModelListener{
 			else
 				elegirFichero();
 		}
+		
 		if (e.getSource().getClass() == JButton.class) {
 			JButton jButton = (JButton) e.getSource();
 			String textoBoton = jButton.getText();
 			System.out.println(textoBoton);
+			
 			switch (textoBoton) {
 			case ">":
 				contador++;
@@ -81,6 +80,7 @@ public class Controlador implements ActionListener, TableModelListener{
 			case "<":
 				contador--;
 				break;
+				
 			case "Insertar":		
 				textoNombre = vista.getTextoEditarNombre().getText();
 				textoApellido = vista.getTextoEditarApellido().getText();
@@ -91,7 +91,7 @@ public class Controlador implements ActionListener, TableModelListener{
 				persona.setEdad(textoEdad);
 				
 				personaDAO.insertarPersona(persona, listaPersona);
-				listaPersona = personaDAO.listarTodasPersonas(fichero);
+				listaPersona = personaDAO.listarTodasPersonas();
 				mostrarFormulario(contador, listaPersona);
 				break;
 				
@@ -100,7 +100,7 @@ public class Controlador implements ActionListener, TableModelListener{
 				textoApellido = vista.getTextoEditarApellido().getText();
 				
 				personaDAO.borrarPersona(textoNombre, textoApellido);
-				listaPersona = personaDAO.listarTodasPersonas(fichero);
+				listaPersona = personaDAO.listarTodasPersonas();
 				contador = 0;
 				mostrarFormulario(contador, listaPersona);
 				break;
@@ -115,13 +115,14 @@ public class Controlador implements ActionListener, TableModelListener{
 				personaDAO.actualizarApellidoPersona(textoCodigo, textoApellido);
 				personaDAO.actualizarEdadPersona(textoCodigo, textoEdad);
 				
-				listaPersona = personaDAO.listarTodasPersonas(fichero);
+				listaPersona = personaDAO.listarTodasPersonas();
 				mostrarFormulario(contador, listaPersona);
 				break;
 				
 			default:
 				break;
 			}
+			
 			contador = contador % listaPersona.size();
 			contador %= listaPersona.size();  
 			if (contador < 0)
@@ -132,22 +133,18 @@ public class Controlador implements ActionListener, TableModelListener{
 	}
 	
 	private void elegirFichero() {
-
-		JFileChooser jFileChooser = new JFileChooser(".");
-		int resultado = jFileChooser.showOpenDialog(vista.getFrame());
-		if (resultado == jFileChooser.APPROVE_OPTION) {
-			fichero = jFileChooser.getSelectedFile().getPath();
+		JFileChooser fileChooser = new JFileChooser(".");
+		int resultado = fileChooser.showOpenDialog(vista.getFrame());
+		if (resultado == fileChooser.APPROVE_OPTION) {
+			fichero = fileChooser.getSelectedFile().getPath();
 			personaDAO = new PersonaDAOImp();
 			personaDAO.cargarContenido(fichero);
-			mostrarBaseDatos(fichero, personaDAO);
-			
-			
+			mostrarBaseDatos(personaDAO);			
 		}
 	}
 	
-	private void mostrarBaseDatos(String fichero, PersonaDAOImp personaDAO)  {
-		listaPersona = personaDAO.listarTodasPersonas(fichero);
-		
+	private void mostrarBaseDatos(PersonaDAOImp personaDAO)  {
+		listaPersona = personaDAO.listarTodasPersonas();	
 		for (int i = 0; i < 100; i++) {
 			vista.getComboBox().addItem(i);
 		}
@@ -168,7 +165,6 @@ public class Controlador implements ActionListener, TableModelListener{
 	}
 	
 	private void mostrarFormulario(int i, List<PersonaDTO> listaPersona) {
-
 		vista.getTextoCodigo().setText(String.valueOf(
 				listaPersona.get(i).getCodigo()));
 		vista.getTextoNombre().setText(
@@ -177,17 +173,13 @@ public class Controlador implements ActionListener, TableModelListener{
 				listaPersona.get(i).getApellido());
 		vista.getTextoEdad().setText(String.valueOf(
 				listaPersona.get(i).getEdad()));
-		
-
-
 	}
 	
 	private void mostrarMensaje() {
-		JOptionPane jpJOptionPane = new JOptionPane();
-		jpJOptionPane.showMessageDialog(vista.getFrame(), 
+		JOptionPane optionPane = new JOptionPane();
+		optionPane.showMessageDialog(vista.getFrame(), 
 				"Creado por Sergio", "Autor",
 				JOptionPane.INFORMATION_MESSAGE);
-
 	}
 
 	private void salirDeAplicacion() {
@@ -196,11 +188,10 @@ public class Controlador implements ActionListener, TableModelListener{
 	
 	public void existeFichero(String DB) {
 		File fichero = new File(DB);
-		String file = "db/personas.xml";
 		personaDAO = new PersonaDAOImp();
 			if (fichero.exists()) {
 			 if (fichero.length() > 16) {
-				mostrarBaseDatos(file, personaDAO); 
+				mostrarBaseDatos(personaDAO); 
 			 }
 			} else {
 				try {

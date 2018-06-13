@@ -19,7 +19,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import modelo.modeloTabla;
-import modelo.Log;
 import modelo.PersonaDAOImp;
 
 public class Controlador implements ActionListener, TableModelListener{
@@ -51,13 +50,14 @@ public class Controlador implements ActionListener, TableModelListener{
 		vista.getBtnInsertar().addActionListener(this);
 		vista.getBtnBorrar().addActionListener(this);
 		vista.getBtnActualizar().addActionListener(this);
+		vista.getBtnInsertarReg().addActionListener(this);
+		vista.getBtnBorrarReg().addActionListener(this);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource().getClass() == JMenuItem.class) {
-
 			JMenuItem menuItem = (JMenuItem) e.getSource();
 
 			if (menuItem.getText().equals("Salir"))
@@ -116,6 +116,11 @@ public class Controlador implements ActionListener, TableModelListener{
 				
 				listaPersona = personaDAO.listarTodasPersonas();
 				mostrarFormulario(contador, listaPersona);
+				break;
+			
+			case "Borrar Registro":
+				int fila = vista.getTable().getSelectionModel().getMinSelectionIndex();
+				((modeloTabla) vista.getTable().getModel()).borrarRegistro(fila);
 				break;
 				
 			default:

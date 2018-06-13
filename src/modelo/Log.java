@@ -24,7 +24,7 @@ public class Log {
 		existeFichero();
 		try {
 			writer = new PrintWriter(new FileWriter(fichero, true));
-			writer.printf("%-20s%-20s%-20s\n", "Persona", nombre + " " + apellido, "borrada");	
+			writer.printf("%-25s%-20s%-25s\n", "Persona", nombre + " " + apellido, " borrada");	
 			writer.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -36,7 +36,7 @@ public void escribirPersonaActualizada(int textoCodigo) {
 	existeFichero();
 	try {
 		writer = new PrintWriter(new FileWriter(fichero, true));
-		writer.printf("%-20s%-20s%-20s\n", "Persona Código", textoCodigo, "actualizada");	
+		writer.printf("%-25s%-20s%-25s\n", "Persona Cï¿½digo", textoCodigo, "actualizada");	
 		writer.close();
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
@@ -48,7 +48,7 @@ public void escribirPersonaInsertada(String nombre, String apellido) {
 	existeFichero();
 	try {
 		writer = new PrintWriter(new FileWriter(fichero, true));
-		writer.printf("%-20s%-20s%-20s\n", "Persona", nombre + " " + apellido, "insertada");	
+		writer.printf("%-25s%-20s%-25s\n", "Persona", nombre + " " + apellido, "insertada");	
 		writer.close();
 	} catch (IOException e) {
 		// TODO Auto-generated catch block

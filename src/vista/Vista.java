@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import javax.swing.Box;
@@ -18,6 +19,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Vista {
 	
@@ -51,8 +56,14 @@ public class Vista {
 	private JButton btnInsertar;
 	private JButton btnBorrar;
 	private JButton btnActualizar;
-	private JScrollPane scrollPane;
 	
+	private JScrollPane scrollPane;
+	private JPanel panelBotonesTabla;
+	private JPanel panelPestanaTabla;
+	private JButton btnInsertarReg;
+	private JButton btnBorrarReg;
+	private Component horizontalStrut_1;
+
 	public JFrame getFrame() {
 		return frame;
 	}
@@ -165,6 +176,14 @@ public class Vista {
 		return scrollPane;
 	}
 	
+	public JButton getBtnInsertarReg() {
+		return btnInsertarReg;
+	}
+
+	public JButton getBtnBorrarReg() {
+		return btnBorrarReg;
+	}
+
 	public Vista() {
 		initialize();
 	}
@@ -300,11 +319,43 @@ public class Vista {
 		btnActualizar = new JButton("Actualizar");
 		panelBotonesPersona.add(btnActualizar);
 		
-		scrollPane = new JScrollPane();
-		tabbedPane.addTab("Tabla", null, scrollPane, null);
+		panelPestanaTabla = new JPanel();
+		tabbedPane.addTab("Tabla", null, panelPestanaTabla, null);
+
+		panelBotonesTabla = new JPanel();
+				panelBotonesTabla.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+				btnInsertarReg = new JButton("Insertar Registro");
+				panelBotonesTabla.add(btnInsertarReg);
+		
+		horizontalStrut_1 = Box.createHorizontalStrut(20);
+		panelBotonesTabla.add(horizontalStrut_1);
+		
+		btnBorrarReg = new JButton("Borrar Registro");
+		panelBotonesTabla.add(btnBorrarReg);
+
+		
+		scrollPane = new JScrollPane();
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		GroupLayout gl_panelPestanaTabla = new GroupLayout(panelPestanaTabla);
+		gl_panelPestanaTabla.setHorizontalGroup(
+			gl_panelPestanaTabla.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelPestanaTabla.createSequentialGroup()
+					.addGroup(gl_panelPestanaTabla.createParallelGroup(Alignment.LEADING)
+						.addComponent(panelBotonesTabla, GroupLayout.PREFERRED_SIZE, 545, GroupLayout.PREFERRED_SIZE)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 545, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_panelPestanaTabla.setVerticalGroup(
+			gl_panelPestanaTabla.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelPestanaTabla.createSequentialGroup()
+					.addComponent(panelBotonesTabla, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 249, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		panelPestanaTabla.setLayout(gl_panelPestanaTabla);
 	}
 
 	

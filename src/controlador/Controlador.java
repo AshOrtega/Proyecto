@@ -5,6 +5,7 @@ import modelo.PersonaDTO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
@@ -49,9 +51,11 @@ public class Controlador implements ActionListener, TableModelListener{
 		vista.getBotonAdelante().addActionListener(this);
 		vista.getBtnInsertar().addActionListener(this);
 		vista.getBtnBorrar().addActionListener(this);
-		vista.getBtnActualizar().addActionListener(this);
+		vista.getBtnActualizar().addActionListener(this);		
 		vista.getBtnInsertarReg().addActionListener(this);
 		vista.getBtnBorrarReg().addActionListener(this);
+
+
 	}
 	
 	@Override
@@ -119,8 +123,32 @@ public class Controlador implements ActionListener, TableModelListener{
 				break;
 			
 			case "Borrar Registro":
-				int fila = vista.getTable().getSelectionModel().getMinSelectionIndex();
-				((modeloTabla) vista.getTable().getModel()).borrarRegistro(fila);
+			        int fila = vista.getTable().getSelectionModel().getMinSelectionIndex();	
+					System.out.println(fila);
+					((modeloTabla) vista.getTable().getModel()).borrarRegistro(fila);
+				break;
+				
+			case "Insertar Registro":		
+				textoNombre = vista.getTextoNombreTabla().getText();
+				textoApellido = vista.getTextoApellidoTabla().getText();
+				textoEdad = (int) vista.getComboBoxTabla().getSelectedItem();
+				
+				int codigoNuevo = 0;
+				for (int i = 0; i < listaPersona.size(); i++) {
+					if (listaPersona.get(i).getCodigo() != (i+1)) {
+						codigoNuevo = i + 1;
+					} else {
+						codigoNuevo = listaPersona.size() + 1;
+					}
+				}
+					
+				persona = new PersonaDTO();
+				persona.setCodigo(codigoNuevo);
+				persona.setNombre(textoNombre);
+				persona.setApellido(textoApellido);
+				persona.setEdad(textoEdad);
+
+				((modeloTabla) vista.getTable().getModel()).insertarRegistro(persona, listaPersona);
 				break;
 				
 			default:
@@ -151,6 +179,7 @@ public class Controlador implements ActionListener, TableModelListener{
 		listaPersona = personaDAO.listarTodasPersonas();	
 		for (int i = 0; i < 100; i++) {
 			vista.getComboBox().addItem(i);
+			vista.getComboBoxTabla().addItem(i);
 		}
 		
 		mostrarFormulario(contador, listaPersona);
@@ -162,7 +191,8 @@ public class Controlador implements ActionListener, TableModelListener{
 		vista.getBtnBorrar().setEnabled(true);
 		vista.getBtnActualizar().setEnabled(true);
 		
-		modeloTabla modeloTabla = new modeloTabla(personaDAO);
+		modeloTabla modeloTabla = new modeloTabla();
+		modeloTabla.obtenerDatos(personaDAO);
 		JTable jTable = new JTable(modeloTabla);
 		jTable.getModel().addTableModelListener(this);
 		vista.getScrollPane().setViewportView(jTable);

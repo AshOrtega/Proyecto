@@ -23,6 +23,10 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+
+import modelo.PersonaDAOImp;
+import modelo.modeloTabla;
 
 public class Vista {
 	
@@ -62,7 +66,10 @@ public class Vista {
 	private JPanel panelPestanaTabla;
 	private JButton btnInsertarReg;
 	private JButton btnBorrarReg;
-	private Component horizontalStrut_1;
+	private JTextField textoNombreTabla;
+	private JTextField textoApellidoTabla;
+	private JComboBox comboBoxTabla;
+
 
 	public JFrame getFrame() {
 		return frame;
@@ -183,6 +190,18 @@ public class Vista {
 	public JButton getBtnBorrarReg() {
 		return btnBorrarReg;
 	}
+	
+	public JTextField getTextoNombreTabla() {
+		return textoNombreTabla;
+	}
+
+	public JTextField getTextoApellidoTabla() {
+		return textoApellidoTabla;
+	}	
+	
+	public JComboBox getComboBoxTabla() {
+		return comboBoxTabla;
+	}
 
 	public Vista() {
 		initialize();
@@ -193,7 +212,7 @@ public class Vista {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 550, 350);
+		frame.setBounds(100, 100, 600, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		
@@ -328,35 +347,46 @@ public class Vista {
 				btnInsertarReg = new JButton("Insertar Registro");
 				panelBotonesTabla.add(btnInsertarReg);
 		
-		horizontalStrut_1 = Box.createHorizontalStrut(20);
-		panelBotonesTabla.add(horizontalStrut_1);
+		textoNombreTabla = new JTextField();
+		panelBotonesTabla.add(textoNombreTabla);
+		textoNombreTabla.setColumns(10);
+		
+		textoApellidoTabla = new JTextField();
+		panelBotonesTabla.add(textoApellidoTabla);
+		textoApellidoTabla.setColumns(10);
+		
+		comboBoxTabla = new JComboBox();
+		panelBotonesTabla.add(comboBoxTabla);
 		
 		btnBorrarReg = new JButton("Borrar Registro");
 		panelBotonesTabla.add(btnBorrarReg);
 
 		
 		scrollPane = new JScrollPane();
-		table = new JTable();
+		
+		modeloTabla modelo = new modeloTabla();
+		table = new JTable(modelo);
 		scrollPane.setViewportView(table);
+		
 		GroupLayout gl_panelPestanaTabla = new GroupLayout(panelPestanaTabla);
 		gl_panelPestanaTabla.setHorizontalGroup(
 			gl_panelPestanaTabla.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelPestanaTabla.createSequentialGroup()
-					.addGroup(gl_panelPestanaTabla.createParallelGroup(Alignment.LEADING)
-						.addComponent(panelBotonesTabla, GroupLayout.PREFERRED_SIZE, 545, GroupLayout.PREFERRED_SIZE)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 545, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(Alignment.TRAILING, gl_panelPestanaTabla.createSequentialGroup()
+					.addContainerGap(77, Short.MAX_VALUE)
+					.addComponent(panelBotonesTabla, GroupLayout.PREFERRED_SIZE, 441, GroupLayout.PREFERRED_SIZE)
+					.addGap(61))
 		);
 		gl_panelPestanaTabla.setVerticalGroup(
 			gl_panelPestanaTabla.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelPestanaTabla.createSequentialGroup()
-					.addComponent(panelBotonesTabla, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 249, GroupLayout.PREFERRED_SIZE)
+					.addComponent(panelBotonesTabla, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		panelPestanaTabla.setLayout(gl_panelPestanaTabla);
 	}
-
-	
 }

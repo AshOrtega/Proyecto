@@ -3,16 +3,15 @@ package modelo;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
-
 import modelo.PersonaDAOImp;
 
 public class modeloTabla extends AbstractTableModel{
 	String[] cabecera;
 	Object[][] datos;
 
-	public modeloTabla (PersonaDAOImp personaDAO) {
-		cabecera = personaDAO.getColumnas();
-		datos    = personaDAO.getContenido();
+	public modeloTabla () {
+		datos = new Object [40][4];
+		cabecera = new String [4];
 	}
 	@Override
 	public int getColumnCount() {
@@ -53,27 +52,55 @@ public class modeloTabla extends AbstractTableModel{
 
 		PersonaDAOImp personaDAO = new PersonaDAOImp(); 
 		int codigo = (int) datos[fila][0];
-		String nuevoValor = (String) valor;
+		String valorString = (String) valor;
 		if (columna == 1) {
-			personaDAO.actualizarNombrePersona(codigo, nuevoValor);
+			personaDAO.actualizarNombrePersona(codigo, valorString);
 		} else if (columna == 2){
-			personaDAO.actualizarApellidoPersona(codigo, nuevoValor);			
+			personaDAO.actualizarApellidoPersona(codigo, valorString);			
 		} else {
-			int valorInt = Integer.parseInt(nuevoValor) ;
-			personaDAO.actualizarEdadPersona(codigo, valorInt);
+			
+			try {
+				if (valorString.matches(".*[a-zA-Z].*")) {
+					throw new ExcepcionEdad();
+				} else {
+					int valorInt = Integer.parseInt(valorString);
+					personaDAO.actualizarEdadPersona(codigo, valorInt);	
+				}					
+			} catch (ExcepcionEdad e) {
+				System.out.println("Error: El valor introducido no es un número");
+			}
 		}
 		
 	}
 	
+	public void obtenerDatos (PersonaDAOImp personaDAO) {
+		cabecera = personaDAO.getColumnas();
+		datos    = personaDAO.getContenido();
+	}
+	
 	public void borrarRegistro (int fila) {
-		int totalPersonas = (datos.length -1);
-		for (int i = fila; i < totalPersonas; i++) {
-			datos[i][0] = datos[i + 1][0];
-			datos[i][1] = datos[i + 1][1];
-			datos[i][2] = datos[i + 1][2];
-			datos[i][3] = datos[i + 1][3];
+		if (fila != -1) {
+			int totalPersonas = (datos.length -1);
+			for (int i = fila; i <= totalPersonas; i++) {
+				System.out.println(datos[i][1]);
+				datos[i][0] = datos[i + 1][0];
+				datos[i][1] = datos[i + 1][1];
+				datos[i][2] = datos[i + 1][2];
+				datos[i][3] = datos[i + 1][3];
+			}
+			fireTableDataChanged();			
 		}
-		fireTableDataChanged();
+
+	}
+	
+	public void insertarRegistro(PersonaDTO persona, ArrayList<PersonaDTO> listaPersonas) {
+		PersonaDAOImp personaDAO = new PersonaDAOImp(); 
+		personaDAO.insertarPersona(persona, listaPersonas);
+		personaDAO.listarTodasPersonas();
+		
+		obtenerDatos(personaDAO);
+		fireTableDataChanged();		
+
 	}
 		
 }
